@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@source "../../../../packages/ui/src";
+
+@theme {
+  --color-ivory: #faf7f2;
+  --color-sand: #efe9df;
+  --color-ink: #1c1917;
+  --color-terracotta: #c0562f;
+  --color-terracotta-dark: #a34423;
+  --color-gold: #b08a3e;
+  --color-emerald: #1f4d3f;
+
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--color-terracotta);
+  color: var(--color-ivory);
+}
