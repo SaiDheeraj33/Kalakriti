@@ -10,6 +10,7 @@ import { IdentityModule } from "./modules/identity/identity.module";
 import { CatalogModule } from "./modules/catalog/catalog.module";
 import { CommerceModule } from "./modules/commerce/commerce.module";
 import { EngagementModule } from "./modules/engagement/engagement.module";
+import { PortalsModule } from "./modules/portals/portals.module";
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { EngagementModule } from "./modules/engagement/engagement.module";
     CatalogModule,
     CommerceModule,
     EngagementModule,
+    PortalsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
