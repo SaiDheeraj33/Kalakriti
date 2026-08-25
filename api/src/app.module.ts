@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { APP_GUARD } from "@nestjs/core";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { PrismaModule } from "./shared/prisma.module";
 import { JwtAuthGuard } from "./shared/guards/jwt-auth.guard";
 import { RolesGuard } from "./shared/guards/roles.guard";
@@ -12,6 +13,9 @@ import { CommerceModule } from "./modules/commerce/commerce.module";
 import { EngagementModule } from "./modules/engagement/engagement.module";
 import { PortalsModule } from "./modules/portals/portals.module";
 
+const throttleTtl = Number(process.env.THROTTLE_TTL_MS ?? 60_000);
+const throttleLimit = Number(process.env.THROTTLE_LIMIT ?? 240);
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,6 +24,7 @@ import { PortalsModule } from "./modules/portals/portals.module";
       envFilePath: [".env", "../../.env"],
     }),
     PrismaModule,
+    ThrottlerModule.forRoot([{ ttl: throttleTtl, limit: throttleLimit }]),
     JwtModule.register({
       global: true,
       secret:
@@ -36,6 +41,7 @@ import { PortalsModule } from "./modules/portals/portals.module";
     PortalsModule,
   ],
   providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
   ],
