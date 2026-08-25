@@ -9,6 +9,7 @@ import { HealthModule } from "./modules/health/health.module";
 import { IdentityModule } from "./modules/identity/identity.module";
 import { CatalogModule } from "./modules/catalog/catalog.module";
 import { CommerceModule } from "./modules/commerce/commerce.module";
+import { EngagementModule } from "./modules/engagement/engagement.module";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CommerceModule } from "./modules/commerce/commerce.module";
     IdentityModule,
     CatalogModule,
     CommerceModule,
+    EngagementModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

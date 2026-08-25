@@ -5,6 +5,20 @@ import { ShieldCheck, MapPin, Sparkles } from "lucide-react";
 import { Button } from "@kalakriti/ui";
 import { fetchApi, formatINR, type ProductDetail } from "@/lib/api";
 import { AddToCart } from "@/components/shop/add-to-cart";
+import { WishlistButton } from "@/components/shop/wishlist-button";
+
+interface ReviewsResponse {
+  summary: { average: number | null; count: number };
+  items: {
+    id: string;
+    rating: number;
+    title: string | null;
+    body: string | null;
+    verifiedPurchase: boolean;
+    createdAt: string;
+    author: string;
+  }[];
+}
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +54,10 @@ export default async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) notFound();
+
+  const reviews = await fetchApi<ReviewsResponse>(
+    `/reviews?productId=${product.id}`
+  );
 
   const attributes = Object.entries(product.attributes ?? {});
   const certificate = product.certificates[0];
@@ -112,6 +130,39 @@ export default async function ProductPage({ params }: { params: Params }) {
             <Button variant="outline">Enquire to Purchase</Button>
             <Button variant="ghost">Request More Images</Button>
           </div>
+
+          <WishlistButton productSlug={product.slug} />
+
+          {reviews && reviews.summary.count > 0 && (
+            <section className="mt-10 border-t border-ink/10 pt-8">
+              <div className="flex items-baseline justify-between">
+                <h2 className="font-display text-2xl">Loved by collectors</h2>
+                <p className="text-sm text-ink/55">
+                  ★ {reviews.summary.average ?? "—"} · {reviews.summary.count} review
+                  {reviews.summary.count === 1 ? "" : "s"}
+                </p>
+              </div>
+              <ul className="mt-6 space-y-6">
+                {reviews.items.slice(0, 3).map((r) => (
+                  <li key={r.id} className="rounded-2xl border border-ink/10 bg-white p-5">
+                    <p className="flex items-center justify-between">
+                      <span className="font-medium">{r.author}</span>
+                      <span className="text-gold tracking-widest">
+                        {"★".repeat(r.rating)}
+                      </span>
+                    </p>
+                    {r.title && (
+                      <p className="mt-2 font-display text-lg italic">{r.title}</p>
+                    )}
+                    {r.body && <p className="mt-1 text-sm text-ink/65">{r.body}</p>}
+                    <p className="mt-2 text-[11px] uppercase tracking-widest text-emerald">
+                      {r.verifiedPurchase ? "Verified purchase" : ""}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {attributes.length > 0 && (
             <dl className="mt-10 grid grid-cols-1 gap-x-10 gap-y-3 border-t border-ink/10 pt-8 sm:grid-cols-2">

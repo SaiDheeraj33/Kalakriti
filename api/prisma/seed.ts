@@ -341,11 +341,46 @@ async function main(): Promise<void> {
     }
   }
 
+  const seededReviews = [
+    {
+      productSlug: "kanjivaram-silk-saree-ruby",
+      reviewerEmail: "meera@kalakriti.in",
+      rating: 5,
+      title: "Heirloom-grade drape",
+      body: "Wove a pallu beside Lakshmi at a cluster showcase - the zari catches lamplight like nothing machine-made can.",
+    },
+    {
+      productSlug: "dhokra-brass-elephant",
+      reviewerEmail: "lakshmi@kalakriti.in",
+      rating: 5,
+      title: "Living craft",
+      body: "Every honeycomb cell is distinct. Guests ask about it before they ask about anything else in the room.",
+    },
+  ];
+  for (const r of seededReviews) {
+    const reviewer = await prisma.user.findUnique({ where: { email: r.reviewerEmail } });
+    const product = await prisma.product.findUnique({ where: { slug: r.productSlug } });
+    if (!reviewer || !product) continue;
+    await prisma.review.upsert({
+      where: { userId_productId: { userId: reviewer.id, productId: product.id } },
+      update: {},
+      create: {
+        userId: reviewer.id,
+        productId: product.id,
+        rating: r.rating,
+        title: r.title,
+        body: r.body,
+        status: "APPROVED" as never,
+      },
+    });
+  }
+
   const counts = {
     users: await prisma.user.count(),
     products: await prisma.product.count(),
     collections: await prisma.collection.count(),
     inventory: await prisma.inventoryItem.count(),
+    reviews: await prisma.review.count(),
   };
   console.log("Seed complete:", counts);
 }
