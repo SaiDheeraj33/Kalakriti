@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "dist/main.js",
+  "postinstall": "prisma generate",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/main.js",
