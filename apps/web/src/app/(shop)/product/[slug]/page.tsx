@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ShieldCheck, MapPin, Sparkles } from "lucide-react";
 import { Button } from "@kalakriti/ui";
 import { fetchApi, formatINR, type ProductDetail } from "@/lib/api";
+import { AddToCart } from "@/components/shop/add-to-cart";
 
 export const dynamic = "force-dynamic";
 
@@ -102,10 +103,14 @@ export default async function ProductPage({ params }: { params: Params }) {
           )}
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <Button size="lg">Enquire to Purchase</Button>
-            <Button variant="outline" size="lg">
-              Request More Images
-            </Button>
+            {product.variants[0] && (
+              <AddToCart variantId={product.variants[0].id} />
+            )}
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-4">
+            <Button variant="outline">Enquire to Purchase</Button>
+            <Button variant="ghost">Request More Images</Button>
           </div>
 
           {attributes.length > 0 && (

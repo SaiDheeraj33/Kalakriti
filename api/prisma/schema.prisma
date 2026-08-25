@@ -263,6 +263,7 @@ model Order {
   id            String      @id @default(cuid())
   number        String      @unique
   userId        String?
+  cartToken     String?
   status        OrderStatus @default(PENDING)
   subtotalMinor Int
   shippingMinor Int         @default(0)
@@ -280,6 +281,7 @@ model Order {
 
   @@index([userId, createdAt])
   @@index([status, createdAt])
+  @@index([cartToken])
 }
 
 model OrderLine {

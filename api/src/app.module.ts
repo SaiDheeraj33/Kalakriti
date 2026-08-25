@@ -8,6 +8,7 @@ import { RolesGuard } from "./shared/guards/roles.guard";
 import { HealthModule } from "./modules/health/health.module";
 import { IdentityModule } from "./modules/identity/identity.module";
 import { CatalogModule } from "./modules/catalog/catalog.module";
+import { CommerceModule } from "./modules/commerce/commerce.module";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CatalogModule } from "./modules/catalog/catalog.module";
     HealthModule,
     IdentityModule,
     CatalogModule,
+    CommerceModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

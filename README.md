@@ -58,7 +58,7 @@ Pre-commit runs `lint-staged` (eslint --fix + prettier). CI mirrors all gates on
 - [x] Phase 1 — Foundation: monorepo, design tokens, API skeleton, DB schema, CI
 - [x] Phase 2 — Identity: auth (JWT + refresh rotation), RBAC guards, profile & addresses
 - [x] Phase 3 — Catalog: products, variants, attributes, collections, Meilisearch sync, storefront PLP/PDP
-- [ ] Phase 4 — Commerce: cart, checkout saga, Razorpay, Shiprocket
+- [x] Phase 4 — Commerce: cart (guest token + merge), checkout saga w/ stock reservation, payments (Strategy: Mock/Razorpay), orders
 - [ ] Phase 5 — Engagement: reviews, wishlist, notifications
 - [ ] Phase 6 — Portals: admin ops + artisan onboarding & certificates
 - [ ] Phase 7 — Hardening: caching, rate limits, Sentry, load tests
